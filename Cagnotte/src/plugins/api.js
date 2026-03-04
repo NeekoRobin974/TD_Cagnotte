@@ -1,15 +1,19 @@
-const baseURL = 'https://donations.edu.netlor.fr'
-//const moveWsURL = 'https://donations.edu.netlor.fr/websockets'
-
 import axios from "axios";
 
-const instance = axios.create({
-  baseURL,
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': `key=${import.meta.env.VITE_API_KEY}`
-  }
-})
+const apiPlugin = {
+  install(app, options) {
+    const { baseURL, apiKey } = options;
 
-//export { moveWsURL }
-export default instance
+    const instance = axios.create({
+      baseURL,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `key=${apiKey}`,
+      },
+    });
+
+    app.config.globalProperties.$api = instance;
+  },
+};
+
+export default apiPlugin;
