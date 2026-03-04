@@ -8,7 +8,7 @@ const app = createApp(App)
 
 app.use(router)
 app.use(apiPlugin, {
-  baseURL: 'https://donations.edu.netlor.fr',
+  baseURL: '/api',
   apiKey: import.meta.env.VITE_API_KEY
 })
 app.use(tools, { cutLength: 15 })
