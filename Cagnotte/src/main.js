@@ -11,6 +11,6 @@ app.use(apiPlugin, {
   baseURL: '/api',
   apiKey: import.meta.env.VITE_API_KEY
 })
-app.use(tools, { cutLength: 15 })
+app.use(tools, { cutLength: 40 })
 
 app.mount('#app')

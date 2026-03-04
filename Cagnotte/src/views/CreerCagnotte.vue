@@ -29,7 +29,7 @@ export default{
   <form @submit.prevent="creer">
     <div>
       <label for="name">Nom</label>
-      <input id="name" v-model="name" type="text" required />
+      <input id="name" v-model="name" type="text" required v-focus/>
     </div>
     <div>
       <label for="description">Description</label>
