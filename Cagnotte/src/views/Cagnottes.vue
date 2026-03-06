@@ -75,34 +75,65 @@ export default {
 </script>
 
 <style scoped>
+div {
+  padding: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+h2 {
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+  color: #222;
+}
+
+h3 {
+  margin: 28px 0 14px;
+  font-size: 1.1rem;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+#creation-cagnotte {
+  display: inline-block;
+  margin-bottom: 24px;
+  padding: 10px 20px;
+  background: #1976D2;
+  color: white;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+#creation-cagnotte:hover {
+  background: #1256a0;
+  text-decoration: none;
+}
+
 .cagnottes-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 16px;
 }
 
 .cagnotte-item {
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
-
 .cagnotte-item:hover {
-  transform: scale(1.02);
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
 }
 
 .cagnotte-item.finished {
-  filter: grayscale(100%);
-  opacity: 0.7;
+  filter: grayscale(80%);
+  opacity: 0.65;
 }
 
 .toggle-finished {
-  display: block;
-  margin: 20px 0;
-  color: #007bff;
-  text-decoration: none;
-}
-
-.toggle-finished:hover {
-  text-decoration: underline;
+  display: inline-block;
+  margin: 24px 0 12px;
+  font-weight: 600;
+  color: #1976D2;
 }
 </style>

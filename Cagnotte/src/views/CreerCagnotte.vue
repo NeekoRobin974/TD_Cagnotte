@@ -16,7 +16,8 @@ export default{
         end_date: this.dateToDB(this.end_date),
         goal: this.goal
       }).then(response => {
-        console.log(response.data)
+        this.$router.push('/');
+        console.log(response.data);
       }).catch(error=>{
         console.log(error.response.data)
       })
@@ -26,7 +27,8 @@ export default{
 
 </script>
 <template>
-  <form @submit.prevent="creer">
+  <div class="form-wrapper">
+    <form @submit.prevent="creer">
     <div>
       <label for="name">Nom</label>
       <input id="name" v-model="name" type="text" required v-focus/>
@@ -45,5 +47,24 @@ export default{
     </div>
     <button type="submit">Créer</button>
   </form>
-  <RouterLink to="/cagnottes">Retourner à l'accueil</RouterLink>
+  <RouterLink to="/cagnottes">← Retourner à l'accueil</RouterLink>
+  </div>
 </template>
+
+<style scoped>
+.form-wrapper {
+  max-width: 520px;
+  margin: 40px auto;
+  background: white;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+a {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 0.9rem;
+}
+</style>
+
