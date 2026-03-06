@@ -1,6 +1,6 @@
 <template>
   <div class="donations-view">
-    <div class="donation-form-container">
+    <div class="donation-form-container" v-if="!isFinished || isEditing">
       <h3>{{ isEditing ? 'Modifier la donation' : 'Faire une donation' }}</h3>
 
       <div v-if="error" class="error-message">
@@ -52,9 +52,13 @@
       </form>
     </div>
 
+    <div class="donation-form-container" v-if="isFinished && !isEditing">
+      <p class="finished-message">Cette cagnotte est terminée, les donations sont closes.</p>
+    </div>
+
     <div class="donations-list-container">
       <h3>Dernières donations</h3>
-      <ul v-if="donations.length > 0" class="donations-list">
+      <TransitionGroup name="list" tag="ul" class="donations-list" v-if="donations.length > 0">
         <li v-for="donation in donations" :key="donation.id">
           <Donation
             :donation="donation"
@@ -63,7 +67,7 @@
             @deleted="suppDon"
           />
         </li>
-      </ul>
+      </TransitionGroup>
       <p v-else>Soyez le premier à faire un don !</p>
     </div>
   </div>
@@ -77,6 +81,10 @@ export default {
   components: {
     Donation
   },
+  props: {
+    cagnotte: Object
+  },
+  emits: ['refresh'],
   data() {
     return {
       donations: [],
@@ -95,6 +103,14 @@ export default {
   computed: {
     cagnotteId() {
       return this.$route.params.id;
+    },
+    isFinished() {
+      if (!this.cagnotte || !this.cagnotte.end_date) return false;
+      const parts = this.cagnotte.end_date.split('T')[0].split('-');
+      const fin = new Date(parts[0], parts[1] - 1, parts[2]);
+      const ajd = new Date();
+      ajd.setHours(0, 0, 0, 0);
+      return fin <= ajd;
     }
   },
 
@@ -142,6 +158,7 @@ export default {
       if (this.editingId === id) {
         this.annulerModif();
       }
+      this.$emit('refresh');
     },
 
     envoyerDon() {
@@ -163,6 +180,7 @@ export default {
               this.donations[index] = response.data;
             }
             this.annulerModif();
+            this.$emit('refresh');
           })
           .catch(this.handleError)
           .finally(() => { this.loading = false; });
@@ -174,6 +192,7 @@ export default {
             this.$nextTick(() => {
               this.$refs.amountInput.focus();
             });
+            this.$emit('refresh');
           })
           .catch(this.handleError)
           .finally(() => { this.loading = false; });
@@ -279,5 +298,30 @@ button:disabled {
 .donations-list {
   list-style: none;
   padding: 0;
+  position: relative;
+}
+
+.list-move,
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.list-leave-active {
+  position: absolute;
+  width: 100%;
+}
+
+.finished-message {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 18px;
+  color: #777;
 }
 </style>
