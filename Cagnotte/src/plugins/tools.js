@@ -2,6 +2,19 @@ export default {
     install(app, options = {}) {
         app.config.globalProperties.$toolsOptions = options;
 
+        const dbDateHourToFr = (date) => {
+            if (!date) return '';
+            const d = new Date(date);
+            return d.toLocaleString('fr-FR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+        };
+
         app.mixin({
             methods: {
                 dateToDB(date) {
@@ -16,19 +29,7 @@ export default {
                     const [year, month, day] = date.split('T')[0].split('-');
                     return `${day}/${month}/${year}`;
                 },
-                dbDateHourToFr(date) {
-                    if (!date)
-                      return '';
-                    const d = new Date(date);
-                    return d.toLocaleString('fr-FR', {
-                        day: '2-digit',
-                        month: '2-digit',
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit'
-                    });
-                },
+                dbDateHourToFr,
                 formatAmount(amount) {
                     if (amount === undefined || amount === null)
                       return '';
@@ -51,6 +52,15 @@ export default {
         app.directive('focus', {
             mounted:function (el) {
                 el.focus();
+            }
+        });
+
+        app.directive('db-date-hour', {
+            mounted(el, binding) {
+                el.innerText = dbDateHourToFr(binding.value);
+            },
+            updated(el, binding) {
+                el.innerText = dbDateHourToFr(binding.value);
             }
         });
     }
