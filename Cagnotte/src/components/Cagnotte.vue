@@ -10,7 +10,8 @@ export default {
   computed: {
     progression() {
       if (!this.cagnotte.goal || this.cagnotte.goal === 0) return 0
-      const pct = ((this.cagnotte.collected || 0) / this.cagnotte.goal) * 100
+      const current = this.cagnotte.collected || this.cagnotte._achieved || 0
+      const pct = (current / this.cagnotte.goal) * 100
       return Math.min(Math.round(pct), 100)
     },
 
@@ -104,4 +105,3 @@ h3 {
   font-style: italic;
 }
 </style>
-
