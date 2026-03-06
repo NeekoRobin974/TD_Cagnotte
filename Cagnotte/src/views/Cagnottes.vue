@@ -51,14 +51,22 @@ export default {
       const ajd = new Date();
       ajd.setHours(0, 0, 0, 0);
       return this.cagnottes
-        .filter(c => new Date(c.end_date) >= ajd)
+        .filter(c => {
+          const parts = c.end_date.split('T')[0].split('-');
+          const fin = new Date(parts[0], parts[1] - 1, parts[2]);
+          return fin > ajd;
+        })
         .sort((a, b) => new Date(a.end_date) - new Date(b.end_date));
     },
     cagnottesFinies() {
       const ajd = new Date();
       ajd.setHours(0, 0, 0, 0);
       return this.cagnottes
-        .filter(c => new Date(c.end_date) < ajd)
+        .filter(c => {
+          const parts = c.end_date.split('T')[0].split('-');
+          const fin = new Date(parts[0], parts[1] - 1, parts[2]);
+          return fin <= ajd;
+        })
         .sort((a, b) => new Date(b.end_date) - new Date(a.end_date));
     }
   },

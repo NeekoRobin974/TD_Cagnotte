@@ -17,7 +17,8 @@ export default {
 
     joursRestants() {
       if (!this.cagnotte.end_date) return null
-      const fin = new Date(this.cagnotte.end_date.split('T')[0])
+      const parts = this.cagnotte.end_date.split('T')[0].split('-')
+      const fin = new Date(parts[0], parts[1] - 1, parts[2])
       const aujourd_hui = new Date()
       aujourd_hui.setHours(0, 0, 0, 0)
       const diff = fin - aujourd_hui
